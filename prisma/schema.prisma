@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CourseType {
+  online
+  video
+  text
+}
+
+enum CourseLessonType {
+  Quizz
+  Lecture
+  Text
+}
+
+model Course {
+  id           Int            @id @default(autoincrement())
+  title        String
+  type         CourseType
+  seo          String?
+  slug         String         @unique
+  defaultSales Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  modules      CourseModule[]
+}
+
+model CourseModule {
+  id       Int            @id @default(autoincrement())
+  title    String
+  courseId Int
+  course   Course         @relation(fields: [courseId], references: [id])
+  lessons  CourseLesson[]
+  order    Int            @default(0)
+}
+
+model CourseLesson {
+  id             Int              @id @default(autoincrement())
+  title          String
+  content        String?
+  vimeoId        String?
+  type           CourseLessonType
+  courseModule   CourseModule     @relation(fields: [courseModuleId], references: [id])
+  courseModuleId Int
+  order          Int              @default(0)
+}
