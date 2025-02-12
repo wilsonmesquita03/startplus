@@ -55,7 +55,14 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+      container: {
+        center: true,
+        padding: "1rem"
+      },
+      backgroundImage: {
+        'main.hero-area': `url('https://escolastart.s3.sa-east-1.amazonaws.com/plataforma/1/670c1843965b4.png')`,
+      }
   	}
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

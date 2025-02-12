@@ -1,4 +1,4 @@
-import VimeoPlayer from "@/components/vimeoPlayer";
+import VimeoPlayer from "@/components/vimeo-player";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 

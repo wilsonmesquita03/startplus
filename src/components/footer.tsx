@@ -1,7 +1,10 @@
+"use client"
 import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -10,12 +13,16 @@ const Footer = () => {
         <div className="mx-auto text-white px-4">
           {/* Cabeçalho: em telas pequenas, empilha; em telas médias para cima, posiciona em linha */}
           <div className="header flex flex-col md:flex-row md:justify-between items-center gap-4 py-10">
-            <img
+            <Image
+              width={100}
+              height={150}
               className="w-[150px] h-[50px] object-contain max-w-full"
               src="/assets/default/img/home/logo.svg"
               alt="Logo Escola Start"
             />
-            <img
+            <Image
+              width={100}
+              height={150}
               className="w-[100px] h-[25px] md:w-[150px] md:h-[50px] object-contain max-w-full"
               src="/assets/default/img/home/microsoft.svg"
               alt="Microsoft"
@@ -87,23 +94,23 @@ const Footer = () => {
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Link</p>
               <div className="flex flex-col gap-2">
-                <a href="/" className="text-sm">
+                <Link href="/" className="text-sm">
                   Home
-                </a>
-                <a href="/classes" className="text-sm">
+                </Link>
+                <Link href="/classes" className="text-sm">
                   Cursos
-                </a>
+                </Link>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Informações</p>
               <div className="flex flex-col gap-2">
-                <a href="/pages/policy" className="text-sm">
+                <Link href="/pages/policy" className="text-sm">
                   Políticas de Privacidade
-                </a>
-                <a href="/pages/terms" className="text-sm">
+                </Link>
+                <Link href="/pages/terms" className="text-sm">
                   Termos de Uso
-                </a>
+                </Link>
               </div>
             </div>
           </div>

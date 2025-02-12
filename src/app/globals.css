@@ -68,6 +68,15 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #101010;
   }
 }
 
+@layer utilities {
+  .custom-border {
+    border-width: 1px;
+    border-style: solid;
+    border-image-source: linear-gradient(180deg, rgba(250, 250, 250, 0.2) 0%, rgb(25, 154, 255) 100%);
+    border-image-slice: 1;
+  }
+}

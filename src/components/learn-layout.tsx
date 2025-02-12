@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import CourseGroup from '@/components/courseGroup';
+import CourseGroup from '@/components/course-group';
 import CloseIcon from '@mui/icons-material/Close';
 import Footer from "@/components/footer";
 import { useSidebar } from "@/app/course/[slug]/learn/sidebar-provider";

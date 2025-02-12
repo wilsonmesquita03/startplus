@@ -1,5 +1,5 @@
 import React from "react";
-import LearnLayout from "@/components/learnLayout";
+import LearnLayout from "@/components/learn-layout";
 import { SidebarProvider } from "./sidebar-provider";
 import prisma from "@/lib/prisma";
 import { CourseProvider } from "./course-provider";
