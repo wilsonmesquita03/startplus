@@ -1,7 +1,9 @@
+import { UnderConstruction } from "@/components/under-construction";
+
 export default function Page() {
   return (
     <>
-      <h1>Admin</h1>
+      <UnderConstruction />
     </>
   );
 }
