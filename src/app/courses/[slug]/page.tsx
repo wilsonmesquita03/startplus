@@ -2,10 +2,12 @@ import LandingPageComponents from "@/components/landing-components";
 import { UnderConstruction } from "@/components/under-construction";
 import prisma from "@/lib/prisma";
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
+  const { slug } = await params
+
   const course = await prisma.course.findUnique({
     where: {
-      slug: params.slug
+      slug: slug
     },
     select: {
       id: true,
