@@ -1,6 +1,6 @@
 import LandingPageComponents from "@/components/landing-components";
+import { UnderConstruction } from "@/components/under-construction";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const course = await prisma.course.findUnique({
@@ -13,7 +13,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
     }
   })
 
-  if (!course) redirect('/404')
+  if (!course){
+    return <UnderConstruction />
+  }
 
   // Buscar os dados da página de aterrissagem e seus componentes
   const landingPage = await prisma.courseLandingPage.findUnique({
