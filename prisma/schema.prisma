@@ -20,15 +20,18 @@ enum CourseLessonType {
 }
 
 model Course {
-  id           Int            @id @default(autoincrement())
-  title        String
-  type         CourseType
-  seo          String?
-  slug         String         @unique
-  defaultSales Int            @default(0)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  modules      CourseModule[]
+  id                Int                @id @default(autoincrement())
+  title             String
+  type              CourseType
+  seo               String?
+  slug              String             @unique
+  defaultSales      Int                @default(0)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  modules           CourseModule[]
+  EnrollmentItem    EnrollmentItem[]
+  Purchase          Purchase[]
+  CourseLandingPage CourseLandingPage?
 }
 
 model CourseModule {
@@ -49,4 +52,79 @@ model CourseLesson {
   courseModule   CourseModule     @relation(fields: [courseModuleId], references: [id])
   courseModuleId Int
   order          Int              @default(0)
+}
+
+model User {
+  id          Int             @id @default(autoincrement())
+  username    String          @unique
+  displayName String?
+  password    String
+  email       String          @unique
+  role        Role            @relation(fields: [roleId], references: [id])
+  roleId      Int
+  cart        EnrollmentCart?
+  purchases   Purchase[]
+}
+
+model Role {
+  id     Int      @id @default(autoincrement())
+  name   String
+  User   User[]
+  Config Config[]
+}
+
+model Config {
+  id            Int  @id @default(autoincrement())
+  defaultRole   Role @relation(fields: [defaultRoleId], references: [id])
+  defaultRoleId Int
+}
+
+model EnrollmentCart {
+  id     String           @id @default(uuid())
+  userId Int              @unique
+  user   User             @relation(fields: [userId], references: [id])
+  items  EnrollmentItem[]
+}
+
+model EnrollmentItem {
+  id         String         @id @default(uuid())
+  cartId     String
+  cart       EnrollmentCart @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  courseId   Int
+  course     Course         @relation(fields: [courseId], references: [id])
+  priceAtAdd Decimal // 🔥 Preço do curso no momento da adição
+}
+
+model Purchase {
+  id          String   @id @default(uuid())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  courseId    Int
+  course      Course   @relation(fields: [courseId], references: [id])
+  pricePaid   Decimal // 📌 Preço que o usuário pagou pelo curso
+  purchasedAt DateTime @default(now())
+}
+
+model CourseLandingPage {
+  id         Int                @id @default(autoincrement())
+  courseId   Int                @unique
+  course     Course             @relation(fields: [courseId], references: [id])
+  components LandingComponent[]
+}
+
+model LandingComponent {
+  id        Int               @id @default(autoincrement())
+  landingId Int
+  landing   CourseLandingPage @relation(fields: [landingId], references: [id], onDelete: Cascade)
+  type      ComponentType
+  order     Int               @default(0) // Para ordenar os componentes na página
+  settings  Json // 🔥 Configurações dinâmicas do componente
+}
+
+enum ComponentType {
+  About
+  Clients
+  Discount
+  InstitutionalArea
+  StatsSection
 }

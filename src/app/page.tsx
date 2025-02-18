@@ -1,9 +1,14 @@
+import { About, Clients, Discount, InstitutionalArea, StatsSection } from "@/components/flags";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import {
   HomeHeroArea
 } from "@/components/hero-area";
-import { CoursesHighlight } from "@/components/ui/highlight-courses";
+import { CoursesHighlight } from "@/components/highlight-courses";
+
+export const metadata = {
+  title: "Home | Escola START",
+}
 
 export default function Home() {
   return (
@@ -12,6 +17,11 @@ export default function Home() {
       <main>
         <HomeHeroArea />
         <CoursesHighlight />
+        <Discount />
+        <About />
+        <Clients />
+        <InstitutionalArea />
+        <StatsSection />
       </main>
       <Footer />
     </>

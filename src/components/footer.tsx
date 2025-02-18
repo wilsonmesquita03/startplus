@@ -3,16 +3,25 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import Image from 'next/image';
 
+
+import { ComponentPropsWithoutRef } from "react";
+type LinkStyledProps = LinkProps & ComponentPropsWithoutRef<"a">;
+
 const Footer = () => {
+  const LinkStyled = ({ href, children, ...props }: LinkStyledProps) => (
+    <Link href={href} {...props} className={`hover:text-[#0297E7] ${props.className || ""}`}>
+      {children}
+    </Link>
+  );
   return (
-    <footer className="w-full relative overflow-x-hidden">
-      <div className="bg-[#101010] w-full relative z-10 p-5 box-border">
+    <footer className="w-full relative overflow-x-hidden bg-[#101010]">
+      <div className="container w-full relative z-10 p-5 box-border">
         <div className="mx-auto text-white px-4">
           {/* Cabeçalho: em telas pequenas, empilha; em telas médias para cima, posiciona em linha */}
-          <div className="header flex flex-col md:flex-row md:justify-between items-center gap-4 py-10">
+          <div className="header flex justify-between items-center gap-4 py-10">
             <Image
               width={100}
               height={150}
@@ -35,82 +44,82 @@ const Footer = () => {
               <div className="flex flex-col gap-2">
                 <p className="text-sm">Rua Sacadura Cabral, 379</p>
                 <p className="text-sm">Rio de Janeiro CEP 23455-000</p>
-                <a
+                <LinkStyled
                   href="https://api.whatsapp.com/send/?phone=5521997078330&amp;text&amp;type=phone_number&amp;app_absent=0"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm flex items-center gap-2"
                 >
                   +55 (21) 99707-8330
-                </a>
-                <a
+                </LinkStyled>
+                <LinkStyled
                   href="mailto:secretariaescolar@escolastart.plus"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm"
                 >
                   secretariaescolar@escolastart.plus
-                </a>
+                </LinkStyled>
                 <div className="social flex flex-wrap gap-2">
-                  <a
+                  <LinkStyled
                     href="https://www.instagram.com/escola.start/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <InstagramIcon />
-                  </a>
-                  <a
+                  </LinkStyled>
+                  <LinkStyled
                     href="https://www.facebook.com/canaisstart"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <FacebookIcon />
-                  </a>
-                  <a
+                  </LinkStyled>
+                  <LinkStyled
                     href="https://www.youtube.com/@_escolastart"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <YouTubeIcon />
-                  </a>
-                  <a
+                  </LinkStyled>
+                  <LinkStyled
                     href="https://www.linkedin.com/company/canaisstart?originalSubdomain=br"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <LinkedInIcon />
-                  </a>
+                  </LinkStyled>
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Institucional</p>
               <div className="flex flex-col gap-2">
-                <a href="/about" className="text-sm">
+                <LinkStyled href="/about" className="text-sm">
                   Sobre a Escola START
-                </a>
+                </LinkStyled>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Link</p>
               <div className="flex flex-col gap-2">
-                <Link href="/" className="text-sm">
+                <LinkStyled href="/" className="text-sm">
                   Home
-                </Link>
-                <Link href="/classes" className="text-sm">
+                </LinkStyled>
+                <LinkStyled href="/courses" className="text-sm">
                   Cursos
-                </Link>
+                </LinkStyled>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Informações</p>
               <div className="flex flex-col gap-2">
-                <Link href="/pages/policy" className="text-sm">
+                <LinkStyled href="/terms/privacy" className="text-sm">
                   Políticas de Privacidade
-                </Link>
-                <Link href="/pages/terms" className="text-sm">
+                </LinkStyled>
+                <LinkStyled href="/terms" className="text-sm">
                   Termos de Uso
-                </Link>
+                </LinkStyled>
               </div>
             </div>
           </div>

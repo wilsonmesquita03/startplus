@@ -21,15 +21,30 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import MenuIcon from '@mui/icons-material/Menu';
+import { useSession } from "@/app/session-provider"
 
 const UserMenu = () => {
+  const { user, status } = useSession()
+
+  if (status === "unauthenticated") return (
+    <div className="flex items-center gap-2">
+      <Link href="/login">
+        <Button variant="outline">Entrar</Button>
+      </Link>
+      <Link href="/register">
+        <Button>Registrar-se</Button>
+      </Link>
+    </div>
+  )
+  if (status !== "authenticated") return null
+
   const UserAvatar = () => (
     <div className="flex items-center gap-2.5">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>Wilson Mesquita</AvatarFallback>
+        <AvatarImage />
+        <AvatarFallback>{user.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
-      <span className="text-white">Wilson Mesquita</span>
+      <span className="text-white">{user.displayName}</span>
     </div>
   )
 
@@ -84,18 +99,13 @@ const UserMenu = () => {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link href="/profile">
+                <Link href={`/profile/${user.username}`}>
                   Perfil
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href="/dashboard">
                   Painel
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/settings">
-                  Configurações
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
