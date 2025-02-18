@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <main>
       <div>
-        <Image src="/assets/default/img/logotipo.svg" width={50} height={50}></Image>
+        <Image src="/assets/default/img/logotipo.svg" width={50} height={50} alt={"logotipo"}></Image>
       </div>
       <Breadcrumb className="my-6">
         <BreadcrumbList>
