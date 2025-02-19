@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export const UnderConstruction = () => {
   return (
-    <div className="flex items-center justify-center w-screen h-screen bg-gray-100">
+    <div className="flex items-center justify-center w-full h-screen bg-gray-100">
       <div className="text-center p-8 shadow-lg w-full h-full flex flex-col items-center justify-center bg-gray-900">
         <div className="text-yellow-500 text-6xl">🚧</div>
         <h1 className="text-3xl font-bold mt-4 text-white">Página em Construção</h1>

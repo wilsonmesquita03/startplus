@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 export const FeaturedCard = () => {
   return (
@@ -7,7 +8,7 @@ export const FeaturedCard = () => {
     >
       <figure>
         <div className="relative w-full h-[250px]">
-          <a href="https://escolastart.plus/marketing/lideranca">
+          <Link href="https://escolastart.plus/marketing/lideranca">
             <Image
               src="https://escolastart.s3.sa-east-1.amazonaws.com/plataforma/1/66785670e6683.png"
               className="object-cover"
@@ -23,15 +24,13 @@ export const FeaturedCard = () => {
                 />
               </svg>
             </div>
-          </a>
+          </Link>
         </div>
 
         <figcaption className="webinar-card-body p-[15px_10px_20px_15px]">
-          <a>
-            <h3 className="mt-4 font-bold text-lg text-white">
-              Liderança Positiva: Inspirando o crescimento individual e coletivo
-            </h3>
-          </a>
+          <h3 className="mt-4 font-bold text-lg text-white">
+            Liderança Positiva: Inspirando o crescimento individual e coletivo
+          </h3>
           <div className="flex gap-4 mt-2.5 mb-5">
             <div className="flex items-center">
               <Image src="/assets/default/img/icons/mic-filled.svg" width="20" height="20" className="webinar-icon" alt="mic" />
@@ -59,7 +58,7 @@ export const FeaturedCard = () => {
             </div>
           </div>
 
-          <a
+          <Link
             href="/marketing/lideranca"
             className="flex gap-2 items-center justify-center mt-5 bg-[#0297E7] text-white font-semibold py-3 w-full text-center rounded"
           >
@@ -70,8 +69,8 @@ export const FeaturedCard = () => {
                 fill="#FAFAFA"
               />
             </svg>
-          </a>
-          <a href="/marketing/lideranca" className="w-full h-full absolute top-0 left-0"></a>
+          </Link>
+          <Link href="/marketing/lideranca" className="w-full h-full absolute top-0 left-0"></Link>
         </figcaption>
       </figure>
     </div>

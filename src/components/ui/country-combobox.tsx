@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ForwardedRef, forwardRef } from "react"
+import Image from "next/image"
 
 // Função para buscar os países
 const fetchCountries = async () => {
@@ -74,10 +75,12 @@ const CountryCombobox = forwardRef(
                     <Check
                       className={`h-4 w-4 ${value === country.value ? "opacity-100" : "opacity-0"}`}
                     />
-                    <img
+                    <Image
+                      width={24}
+                      height={16}
                       src={country.flag}
                       alt={`Flag of ${country.label}`}
-                      className="w-6 h-4 mr-2"
+                      className="mr-2"
                     />
                     {country.label}
                   </CommandItem>

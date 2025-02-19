@@ -55,22 +55,52 @@ model CourseLesson {
 }
 
 model User {
-  id          Int             @id @default(autoincrement())
-  username    String          @unique
+  id          Int              @id @default(autoincrement())
+  username    String           @unique
   displayName String?
   password    String
-  email       String          @unique
-  role        Role            @relation(fields: [roleId], references: [id])
+  email       String           @unique
   roleId      Int
+  role        Role             @relation(fields: [roleId], references: [id])
   cart        EnrollmentCart?
   purchases   Purchase[]
+  permissions UserPermission[]
 }
 
 model Role {
-  id     Int      @id @default(autoincrement())
-  name   String
-  User   User[]
-  Config Config[]
+  id          Int              @id @default(autoincrement())
+  name        String           @unique
+  users       User[]
+  permissions RolePermission[]
+  Config      Config[]
+}
+
+model Permission {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  description     String?
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
+}
+
+model UserPermission {
+  id           Int        @id @default(autoincrement())
+  userId       Int
+  permissionId Int
+  user         User       @relation(fields: [userId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([userId, permissionId])
 }
 
 model Config {

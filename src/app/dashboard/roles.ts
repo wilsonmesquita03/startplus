@@ -50,11 +50,8 @@ export const admin = [
         isCollapsible: false,
         icon: GraduationCap,
         subItems: [
-          { title: "Cursos", url: "/dashboard/webinars?type=course" },
-          { title: "Aulas Ao Vivo", url: "/dashboard/webinars?type=webinar" },
-          { title: "Cursos em Texto", url: "/dashboard/webinars?type=text_lesson" },
-          { title: "Novo", url: "/dashboard/webinars/create" },
-          { title: "Histórico App Agora", url: "/dashboard/agora_history" },
+          { title: "Cursos", url: "/dashboard/courses" },
+          { title: "Novo", url: "/dashboard/courses/create" },
         ],
       },
       {
@@ -89,7 +86,10 @@ export const admin = [
             url: "/dashboard/certificates/course-competition",
           },
           { title: "Modelos", url: "/dashboard/certificates/templates" },
-          { title: "Novo Modelo", url: "/dashboard/certificates/templates/new" },
+          {
+            title: "Novo Modelo",
+            url: "/dashboard/certificates/templates/new",
+          },
           { title: "Configurações", url: "/dashboard/certificates/settings" },
         ],
       },
@@ -238,7 +238,10 @@ export const admin = [
         title: "Gerenciamento de IP",
         isCollapsible: false,
         subItems: [
-          { title: "Histórico de Login", url: "/dashboard/users/login-history" },
+          {
+            title: "Histórico de Login",
+            url: "/dashboard/users/login-history",
+          },
           { title: "Restrição de IP", url: "/dashboard/users/ip-restriction" },
         ],
       },
@@ -283,7 +286,10 @@ export const admin = [
         icon: Headphones,
         subItems: [
           { title: "Tickets", url: "/dashboard/supports" },
-          { title: "Novo Ticket de Suporte", url: "/dashboard/supports/create" },
+          {
+            title: "Novo Ticket de Suporte",
+            url: "/dashboard/supports/create",
+          },
           { title: "Departamentos", url: "/dashboard/supports/departments" },
         ],
       },
@@ -296,10 +302,19 @@ export const admin = [
         title: "Comentários",
         isCollapsible: false,
         subItems: [
-          { title: "Comentários do Curso", url: "/dashboard/comments/webinars" },
-          { title: "Comentários do Pacote", url: "/dashboard/comments/bundles" },
+          {
+            title: "Comentários do Curso",
+            url: "/dashboard/comments/webinars",
+          },
+          {
+            title: "Comentários do Pacote",
+            url: "/dashboard/comments/bundles",
+          },
           { title: "Comentários do Blog", url: "/dashboard/comments/blog" },
-          { title: "Comentários do produto", url: "/dashboard/comments/products" },
+          {
+            title: "Comentários do produto",
+            url: "/dashboard/comments/products",
+          },
         ],
       },
       {
@@ -311,7 +326,10 @@ export const admin = [
             title: "Comentários do Curso",
             url: "/dashboard/comments/webinars/reports",
           },
-          { title: "Comentários do Blog", url: "/dashboard/comments/blog/reports" },
+          {
+            title: "Comentários do Blog",
+            url: "/dashboard/comments/blog/reports",
+          },
           { title: "Motivos de Relatório", url: "/dashboard/reports/reasons" },
           { title: "Tópicos do fórum", url: "/dashboard/reports/forum-topics" },
         ],
@@ -356,9 +374,15 @@ export const admin = [
         subItems: [
           { title: "Novo Produto", url: "/dashboard/store/products/create" },
           { title: "Produtos", url: "/dashboard/store/products" },
-          { title: "Produtos Internos", url: "/dashboard/store/in-house-products" },
+          {
+            title: "Produtos Internos",
+            url: "/dashboard/store/in-house-products",
+          },
           { title: "Pedidos", url: "/dashboard/store/orders" },
-          { title: "Pedidos Internos", url: "/dashboard/store/in-house-orders" },
+          {
+            title: "Pedidos Internos",
+            url: "/dashboard/store/in-house-orders",
+          },
           { title: "Vendedores", url: "/dashboard/store/sellers" },
           { title: "Categorias", url: "/dashboard/store/categories" },
           { title: "Filtros", url: "/dashboard/store/filters" },
@@ -392,7 +416,10 @@ export const admin = [
         subItems: [
           { title: "Página 404", url: "/dashboard/additional_page/404" },
           { title: "Sobre Nós", url: "/dashboard/additional_page/about" },
-          { title: "Metodologia", url: "/dashboard/additional_page/methodology" },
+          {
+            title: "Metodologia",
+            url: "/dashboard/additional_page/methodology",
+          },
           { title: "Contato", url: "/dashboard/additional_page/contact_us" },
           { title: "Rodapé", url: "/dashboard/additional_page/footer" },
           {
@@ -439,8 +466,14 @@ export const admin = [
         isCollapsible: false,
         subItems: [
           { title: "Conteúdos Gerados", url: "/dashboard/ai-contents/lists" },
-          { title: "Novo Modelo", url: "/dashboard/ai-contents/templates/create" },
-          { title: "Modelo de Serviço", url: "/dashboard/ai-contents/templates" },
+          {
+            title: "Novo Modelo",
+            url: "/dashboard/ai-contents/templates/create",
+          },
+          {
+            title: "Modelo de Serviço",
+            url: "/dashboard/ai-contents/templates",
+          },
           { title: "Configurações", url: "/dashboard/ai-contents/settings" },
         ],
       },
@@ -520,7 +553,10 @@ export const admin = [
         title: "Pacotes SaaS",
         isCollapsible: false,
         subItems: [
-          { title: "Pacotes", url: "/dashboard/financial/registration-packages" },
+          {
+            title: "Pacotes",
+            url: "/dashboard/financial/registration-packages",
+          },
           {
             title: "Novo Pacote",
             url: "/dashboard/financial/registration-packages/new",
@@ -539,10 +575,19 @@ export const admin = [
         title: "Parcelamentos",
         isCollapsible: false,
         subItems: [
-          { title: "Novo Plano", url: "/dashboard/financial/installments/create" },
+          {
+            title: "Novo Plano",
+            url: "/dashboard/financial/installments/create",
+          },
           { title: "Planos", url: "/dashboard/financial/installments" },
-          { title: "Compras", url: "/dashboard/financial/installments/purchases" },
-          { title: "Atrasado", url: "/dashboard/financial/installments/overdue" },
+          {
+            title: "Compras",
+            url: "/dashboard/financial/installments/purchases",
+          },
+          {
+            title: "Atrasado",
+            url: "/dashboard/financial/installments/overdue",
+          },
           {
             title: "Histórico de Atrasos",
             url: "/dashboard/financial/installments/overdue_history",
@@ -595,7 +640,10 @@ export const admin = [
         title: "Carrinho Abandonado",
         isCollapsible: false,
         subItems: [
-          { title: "Nova Regra", url: "/dashboard/abandoned-cart/rules/create" },
+          {
+            title: "Nova Regra",
+            url: "/dashboard/abandoned-cart/rules/create",
+          },
           { title: "Regras", url: "/dashboard/abandoned-cart/rules" },
           {
             title: "Carrinhos de Usuários",
@@ -677,7 +725,10 @@ export const admin = [
             title: "Histórico de Bônus",
             url: "/dashboard/registration_bonus/history",
           },
-          { title: "Configurações", url: "/dashboard/registration_bonus/settings" },
+          {
+            title: "Configurações",
+            url: "/dashboard/registration_bonus/settings",
+          },
         ],
       },
       {

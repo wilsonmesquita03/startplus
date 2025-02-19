@@ -49,3 +49,8 @@ export const getSession = async (): Promise<SessionContextType> => {
   }
 };
 
+export const isAuthenticated = async () => {
+  const session = await getSession();
+
+  return session.status === "authenticated";
+};

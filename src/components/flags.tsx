@@ -86,7 +86,8 @@ export const Clients: React.FC = () => (
                 { src: "https://escolastart.s3.sa-east-1.amazonaws.com/plataforma/1/clientes/66c782ce3df99.png", alt: "Fieb" }
               ].map((client, idx) => (
                 <li key={idx} className="w-[200px] h-[200px] relative">
-                  <img
+                  <Image
+                    fill
                     src={client.src}
                     alt={client.alt}
                     className="absolute h-full w-full object-contain"
@@ -139,7 +140,7 @@ const StatItem: React.FC<StatItemProps> = ({ imageSrc, altText, number, title })
     <div>
       <div className="flex flex-col items-center text-center py-6 px-5 bg-white rounded-lg shadow-lg">
         <div className="bg-[#0297e7] p-4 rounded-full">
-          <img src={imageSrc} alt={altText} className="img-fluid" />
+          <Image src={imageSrc} alt={altText} className="img-fluid" />
         </div>
         <strong className="text-3xl mt-4">{number}</strong>
         <h4 className="text-xl mt-2">{title}</h4>
@@ -332,7 +333,7 @@ export const Certificate: React.FC = () => {
 export const Instructor: React.FC = () => {
   return (
     <section className="container text-white">
-      
+
     </section>
   )
 }

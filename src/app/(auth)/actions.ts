@@ -113,7 +113,6 @@ export async function registerUser(prevState: any, formData: FormData) {
         roleId: config.defaultRoleId,
       },
     });
-
   } catch (error) {
     if (error instanceof ZodError) {
       const fieldErrors: Record<string, string[]> = {};

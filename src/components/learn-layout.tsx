@@ -39,7 +39,6 @@ const Learnlayout = ({ children, data }: { children: React.ReactNode, data: Data
     };
 
     const handleResize = () => {
-      console.log(window.innerWidth)
       if (window.innerWidth > 1159 && !isOpen) toggleSidebar()
       if (window.innerWidth < 1159) closeSidebar()
     };

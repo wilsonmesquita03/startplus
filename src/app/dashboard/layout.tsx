@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Breadcrumb>
           </div>
         </header>
-        <div>
+        <div className="p-4">
           {children}
         </div>
       </SidebarInset>
