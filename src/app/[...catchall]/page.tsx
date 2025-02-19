@@ -4,9 +4,6 @@ import { notFound } from 'next/navigation';
 import { PLASMIC } from '@/lib/plasmic-init'
 import { PlasmicClientRootProvider } from './../plasmic-init-client';
 
-// Use revalidate if you want incremental static regeneration
-export const revalidate = 60;
-
 export default async function PlasmicLoaderPage({
   params,
   searchParams
