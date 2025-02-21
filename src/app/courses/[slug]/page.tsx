@@ -1,8 +1,9 @@
 import LandingPageComponents from "@/components/landing-components";
-import { UnderConstruction } from "@/components/under-construction";
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import DefaultPage from "./default-page";
 
-export default async function Page({ params }: { params: Promise<{ slug: string }>}) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
   const course = await prisma.course.findUnique({
@@ -15,8 +16,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     }
   })
 
-  if (!course){
-    return <UnderConstruction />
+  if (!course) {
+    return redirect("/404")
   }
 
   // Buscar os dados da página de aterrissagem e seus componentes
@@ -28,7 +29,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   if (!landingPage) {
     // Redirecionar para a página padrão de cursos caso não houver lp
 
-    return <div className="tw-text-center tw-text-red-600 tw-text-xl">Página não encontrada</div>;
+    return <DefaultPage slug={slug} />
   }
 
   // Passar os componentes para o novo componente de renderização

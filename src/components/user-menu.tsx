@@ -68,7 +68,7 @@ const UserMenu = () => {
                   <Link href="/dashboard">Perfil</Link>
                 </li>
                 <li>
-                  <Link href="/settings">Configurações</Link>
+                  <Link href="/dashboard/my-courses">Meus cursos</Link>
                 </li>
                 <li>
                   <Link href="/">Home</Link>
@@ -79,6 +79,7 @@ const UserMenu = () => {
                 <li>
                   <Link href="/methodology">Metodologia</Link>
                 </li>
+                
               </ul>
             </div>
             <DrawerFooter>
@@ -106,6 +107,11 @@ const UserMenu = () => {
               <DropdownMenuItem>
                 <Link href="/dashboard">
                   Painel
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href="/dashboard/my-courses">
+                  Meus cursos
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>

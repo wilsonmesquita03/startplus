@@ -19,9 +19,9 @@ const Footer = () => {
   return (
     <footer className="w-full relative overflow-x-hidden bg-[#101010]">
       <div className="container w-full relative z-10 p-5 box-border">
-        <div className="mx-auto text-white px-4">
+        <div className="mx-auto text-white">
           {/* Cabeçalho: em telas pequenas, empilha; em telas médias para cima, posiciona em linha */}
-          <div className="header flex justify-between items-center gap-4 py-10">
+          <div className="flex justify-between items-center gap-4 py-10">
             <Image
               width={100}
               height={150}
@@ -38,7 +38,7 @@ const Footer = () => {
             />
           </div>
           {/* Grid de links: 1 coluna em telas pequenas, 2 colunas em md e 4 em lg */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-4">
             <div className="flex flex-col gap-4">
               <p className="text-2xl font-bold">Contate-nos</p>
               <div className="flex flex-col gap-2">
@@ -124,7 +124,7 @@ const Footer = () => {
             </div>
           </div>
           {/* Rodapé */}
-          <div className="footer w-full p-4">
+          <div className="w-full p-4">
             <p className="text-center text-sm text-white">
               Powered By <strong>Escola Start</strong>
             </p>

@@ -24,14 +24,18 @@ model Course {
   title             String
   type              CourseType
   seo               String?
+  description       String?
   slug              String             @unique
   defaultSales      Int                @default(0)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  price             Float              @default(0)
+  promotionalPrice  Float?
   modules           CourseModule[]
   EnrollmentItem    EnrollmentItem[]
   Purchase          Purchase[]
   CourseLandingPage CourseLandingPage?
+  draft             Boolean            @default(true)
 }
 
 model CourseModule {

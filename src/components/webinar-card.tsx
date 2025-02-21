@@ -10,9 +10,9 @@ export const FeaturedCard = () => {
         <div className="relative w-full h-[250px]">
           <Link href="https://escolastart.plus/marketing/lideranca">
             <Image
+              fill
               src="https://escolastart.s3.sa-east-1.amazonaws.com/plataforma/1/66785670e6683.png"
               className="object-cover"
-              layout="fill"
               alt="Liderança Positiva: Inspirando o crescimento individual e coletivo"
             />
             <div className="flex justify-center items-center gap-[0.5ch] text-white p-2 absolute bottom-0 bg-[rgba(250,250,250,0.2)] backdrop-blur w-full">

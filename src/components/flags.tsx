@@ -34,7 +34,7 @@ export const About: React.FC = () => (
           Transformando vidas <strong className="font-semibold">Mudando histórias</strong>
         </h2>
         <span className="text-[#ffffff] font-light text-base text-center">
-          Com quase 10 anos de trajetória, a <strong className="font-bold">Escola START</strong> já conta com mais de <strong className="font-bold">520 mil usuários cadastrados</strong> que se beneficiam de uma <strong className="font-bold">metodologia inovadora e acessível</strong>, combinando habilidades essenciais com as competências técnicas mais demandadas pelo mercado de trabalho em <strong className="font-bold">cursos para quem não pode perder tempo.</strong> Somos uma escola disruptiva, reconhecida por nossa cultura e valores com o prêmio Great Places to Work 2024 e também pelo prêmio Exame Negócios em Expansão 2023, reforçando nosso compromisso com o crescimento profissional de nossos alunos.
+          Com quase 10 anos de trajetória, a <strong className="font-bold">Escola START</strong> já conta com mais de <strong className="font-bold">520 mil usuários cadastrados</strong> que se beneficiam de uma <strong className="font-bold">metodologia inovadora e acessível</strong>, combinando habilidades essenciais com as competências técnicas mais demandadas pelo mercado de trabalho em <strong className="font-bold">cursos para quem não pode perder tempo.</strong> Somos uma escola disruptiva, reconhecida por nossa cultura e valores com o prêmio Great Place to Work 2024 e também pelo prêmio Exame Negócios em Expansão 2023, reforçando nosso compromisso com o crescimento profissional de nossos alunos.
           <br />
           Aqui, você encontra mais do que cursos: encontra a qualificação profissional que vai <strong className="font-bold">transformar sua história</strong> e trazer uma verdadeira mudança na sua vida.
         </span>
@@ -140,7 +140,7 @@ const StatItem: React.FC<StatItemProps> = ({ imageSrc, altText, number, title })
     <div>
       <div className="flex flex-col items-center text-center py-6 px-5 bg-white rounded-lg shadow-lg">
         <div className="bg-[#0297e7] p-4 rounded-full">
-          <Image src={imageSrc} alt={altText} className="img-fluid" />
+          <Image src={imageSrc} alt={altText} className="img-fluid" width={50} height={50} />
         </div>
         <strong className="text-3xl mt-4">{number}</strong>
         <h4 className="text-xl mt-2">{title}</h4>
