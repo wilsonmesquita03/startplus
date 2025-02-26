@@ -1,12 +1,12 @@
 "use client"
 
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
+  LifeBuoy,
   LogOut,
-  Sparkles,
+  Settings,
+  UserPen,
 } from "lucide-react"
 
 import {
@@ -83,23 +83,20 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <UserPen />
+                Perfil
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
+                <LifeBuoy />
+                Suporte
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
-                Notifications
+                Notificações
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings />
+                Configurações
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

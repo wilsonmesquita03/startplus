@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useRouter } from 'next/navigation';
 import { useCourse } from '@/app/course/[slug]/learn/course-provider';
+import Link from 'next/link';
 
 type Data = {
   id: number;
@@ -46,21 +47,23 @@ const CourseGroup = ({ data }: { data: Data }) => {
           <ul>
             {
               data.lessons.map((lesson) => (
-                <li key={lesson.id} onClick={() => router.push(`/course/${slug}/learn/${lesson.type.toLowerCase()}/${lesson.id}`)}>
-                  <div className="flex gap-4 cursor-pointer hover:bg-[#d1d2e0] p-4">
-                    <div>
-                      <Checkbox />
-                    </div>
-                    <div>
+                <li key={lesson.id}>
+                  <Link href={`/course/${slug}/learn/${lesson.type.toLowerCase()}/${lesson.id}`}>
+                    <div className="flex gap-4 cursor-pointer hover:bg-[#d1d2e0] p-4">
                       <div>
-                        <p className="text-sm">{lesson.title}</p>
+                        <Checkbox />
                       </div>
-                      <div className="flex items-end gap-1.5 pt-2">
-                        <OndemandVideoIcon fontSize="small" />
-                        <p className="text-xs">14 min</p>
+                      <div>
+                        <div>
+                          <p className="text-sm">{lesson.title}</p>
+                        </div>
+                        <div className="flex items-end gap-1.5 pt-2">
+                          <OndemandVideoIcon fontSize="small" />
+                          <p className="text-xs">14 min</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
               ))
             }

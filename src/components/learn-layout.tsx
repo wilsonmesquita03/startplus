@@ -7,7 +7,6 @@ import { useSidebar } from "@/app/course/[slug]/learn/sidebar-provider";
 import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
 import Link from "next/link";
-import { useCourse } from "@/app/course/[slug]/learn/course-provider";
 
 type Data = {
   title: string;
@@ -27,7 +26,6 @@ const Learnlayout = ({ children, data }: { children: React.ReactNode, data: Data
   const [sidebarTop, setSidebarTop] = useState(56);
   const [sidebarHeight, setSidebarHeight] = useState(0);
   const { isOpen, toggleSidebar, closeSidebar } = useSidebar()
-  const { slug } = useCourse()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,14 +55,17 @@ const Learnlayout = ({ children, data }: { children: React.ReactNode, data: Data
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="bg-[#1d1e27] w-full h-[56px] flex items-center gap-4 px-4 flex-shrink-0 border-b border-b-[#595c73]">
-        <Image
-          src="/assets/default/img/home/logo.svg" // Substitua pelo caminho correto da logo
-          alt="Logo"
-          width={84}
-          height={16}
-        />
-        <Link href={`/course/${slug}`} className="text-white text-lg">{data.title}</Link>
+      <div className="bg-[#1d1e27] w-full h-[56px] flex justify-between items-center px-4 flex-shrink-0 border-b border-b-[#595c73]">
+        <div className="flex gap-4">
+          <Image
+            src="/assets/default/img/home/logo.svg" // Substitua pelo caminho correto da logo
+            alt="Logo"
+            width={84}
+            height={16}
+          />
+          <h1 className="text-white text-lg">{data.title}</h1>
+        </div>
+        <Link href={`/dashboard/my-courses`} className="text-white">Voltar para a área de aprendizagem</Link>
       </div>
 
       <div className="flex-1 flex">

@@ -10,7 +10,7 @@ export const metadata = {
   title: "Home | Escola START",
 }
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Header />

@@ -19,19 +19,34 @@ export async function loginUser(prevState: any, formData: FormData) {
     password: formData.get("password"),
   };
 
+  const validated = loginSchema.safeParse(rawFormData);
+
+  if (!validated.success) {
+    const formattedErrors = validated.error.errors.reduce((acc, err) => {
+      const field = err.path[0]; // Pega o nome do campo
+      if (!acc[field]) {
+        acc[field] = [];
+      }
+      acc[field].push(err.message);
+      return acc;
+    }, {} as Record<string, string[]>);
+
+    return { errors: formattedErrors };
+  }
+
+  const { email, password } = validated.data;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    return { errors: { email: ["Email ou senha incorretos"] } };
+  }
+
   try {
-    const { email, password } = loginSchema.parse(rawFormData);
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      return { errors: { email: ["Email ou senha incorretos"] } };
-    }
-
     const passwordOk = bcrypt.compareSync(password, user.password);
 
     if (!passwordOk) {
@@ -94,9 +109,22 @@ export async function registerUser(prevState: any, formData: FormData) {
   };
 
   try {
-    const validated = await registerSchema.parseAsync(rawFormData);
+    const validated = await registerSchema.safeParseAsync(rawFormData);
 
-    const { email, password, displayName } = validated;
+    if (!validated.success) {
+      const formattedErrors = validated.error.errors.reduce((acc, err) => {
+        const field = err.path[0]; // Pega o nome do campo
+        if (!acc[field]) {
+          acc[field] = [];
+        }
+        acc[field].push(err.message);
+        return acc;
+      }, {} as Record<string, string[]>);
+  
+      return { errors: formattedErrors };
+    }
+
+    const { email, password, displayName } = validated.data;
 
     const config = await prisma.config.findFirst();
 

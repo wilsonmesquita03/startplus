@@ -4,7 +4,7 @@ import { loginUser } from "../actions";
 import Link from "next/link";
 
 export default function Page() {
-  const [message, formAction] = useActionState(loginUser, null);
+  const [message, formAction, pending] = useActionState(loginUser, null);
 
   // Função para renderizar erros de forma dinâmica
   const renderError = (field: string) => {
@@ -64,12 +64,16 @@ export default function Page() {
           </div>
         )}
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Entrar
-        </button>
+        {
+          !pending && (
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Entrar
+            </button>
+          )
+        }
 
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">

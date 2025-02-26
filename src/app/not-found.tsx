@@ -9,7 +9,7 @@ export const metadata = {
 
 export default async function NotFound() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <Header />
       <div className="flex flex-col items-center justify-center text-gray-800">
         <div className="text-center my-32">

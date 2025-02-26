@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { SessionProvider } from './session-provider';
 import { getSession } from '@/lib/session';
+import { Toaster } from '@/components/ui/sonner';
 
 const getMontserrat = Montserrat({
   variable: "--font-montserrat",
@@ -22,12 +23,13 @@ export default async function RootLayout({
   const session = await getSession()
 
   return (
-    <html lang="en" data-toolpad-color-scheme="dark">
+    <html lang="en">
       <body
         className={`${getMontserrat.variable} antialiased`}
       >
         <SessionProvider session={session}>
           {children}
+          <Toaster />
         </SessionProvider>
       </body>
     </html>

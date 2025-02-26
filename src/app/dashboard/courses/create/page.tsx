@@ -1,13 +1,18 @@
 import { Create } from "@/components/forms/course"
 import prisma from "@/lib/prisma";
+import { protectedRoute } from "@/lib/protect-route";
 
 export const metadata = {
   title: "Criar Curso | Escola START",
 }
 
-export default function Page() {
+export default async function Page() {
+  await protectedRoute("create_courses")
+  
   async function create(formData: FormData) {
     "use server";
+
+    await protectedRoute("create_courses")
 
     const data = {
       title: formData.get("title") as string,
@@ -22,7 +27,6 @@ export default function Page() {
     await prisma.course.create({
       data
     })
-
   }
 
   return <Create action={create} />

@@ -2,6 +2,7 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenuButton, SidebarMenuSub, Sid
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ChevronRight, LucideIcon } from "lucide-react"
+import Link from "next/link"
 
 // Definir os tipos das props
 interface SidebarNavItem {
@@ -43,9 +44,9 @@ export const AppSidebarNav = ({ sections }: AppSidebarNavProps) => {
                         {item.subItems.map((subItem, subIndex) => (
                           <SidebarMenuSubItem key={subIndex}>
                             <SidebarMenuSubButton asChild>
-                              <a href={subItem.url || "#"}>
+                              <Link href={subItem.url || "#"}>
                                 <span>{subItem.title}</span>
-                              </a>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
@@ -56,15 +57,17 @@ export const AppSidebarNav = ({ sections }: AppSidebarNavProps) => {
               ) : (
                 // Caso o item não tenha subitens, renderiza apenas o link simples
                 <SidebarMenuItem key={index}>
-                  <SidebarMenuButton tooltip={item.title}>
-                    {item.icon && <item.icon />}
-                    <a href={item.url || "#"}>{item.title}</a>
-                  </SidebarMenuButton>
+                  <Link href={item.url || "#"}>
+                    <SidebarMenuButton tooltip={item.title}>
+                      {item.icon && <item.icon />}
+                      {item.title}
+                    </SidebarMenuButton>
+                  </Link>
                 </SidebarMenuItem>
               )
             ))}
           </SidebarMenu>
-        </SidebarGroup>
+        </SidebarGroup >
       ))}
     </>
   )

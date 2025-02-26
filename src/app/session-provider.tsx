@@ -6,6 +6,7 @@ type User = {
   displayName: string | null;
   email: string;
   roleId: number;
+  permissions: string[];
 };
 
 type SessionContextType =

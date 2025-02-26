@@ -89,6 +89,7 @@ export const Create = ({ action }: { action: (data: FormData) => any }) => {
 
 // Tipagem de dados para o curso, você pode adaptá-la conforme necessário
 interface CourseData {
+  id: number;
   title: string | null;
   type: "online" | "video" | "text";
   seo: string | null;
@@ -96,6 +97,25 @@ interface CourseData {
   slug: string;
   defaultSales: number;
   price: number;
+  modules: Module[]
+}
+
+interface Module {
+  id: number
+  title: string
+  courseId: number
+  order: number
+  lessons: Lesson[]
+}
+
+interface Lesson {
+  id: number
+  title: string | null
+  content: string | null
+  vimeoId: string | null
+  courseModuleId: number
+  type: "Lecture" | "Quizz" | "Text"
+  order: number
 }
 
 interface EditFormProps {
@@ -107,6 +127,7 @@ export const Edit = ({ course, action }: EditFormProps) => {
   return (
     <form action={action} className="w-full">
       <h2 className="text-xl font-semibold mb-4">Editar Curso</h2>
+      <input type="text" className="hidden" name="id" value={course.id} readOnly />
       <div className="mb-4">
         <label className="block mb-2">Título:</label>
         <Input
@@ -186,23 +207,23 @@ export const Edit = ({ course, action }: EditFormProps) => {
       <Separator />
       <div className="flex flex-col gap-2 my-4">
         <div className="flex items-center space-x-2">
-          <Switch id="hasSuport" />
+          <Switch id="hasSuport" name="hasSuport" />
           <Label htmlFor="hasSuport">Suporte (Não implementado)</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <Switch id="hasCertificate" />
+          <Switch id="hasCertificate" name="hasCertificate" />
           <Label htmlFor="hasCertificate">Certificado de Conclusão (Não implementado)</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <Switch id="hasForum" />
+          <Switch id="hasForum" name="hasForum" />
           <Label htmlFor="hasForum">Forum (Não implementado)</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <Switch id="hasSubscription" />
+          <Switch id="hasSubscription" name="hasSubscription" />
           <Label htmlFor="hasSubscription">Inscrever-se (Não implementado)</Label>
         </div>
         <div className="flex items-center space-x-2">
-          <Switch id="private" />
+          <Switch id="private" name="private" />
           <Label htmlFor="private">Privado (Não implementado)</Label>
         </div>
       </div>
@@ -211,7 +232,7 @@ export const Edit = ({ course, action }: EditFormProps) => {
       { /* Implementar módulos e aulas aqui, quero que seja dragglable tanto as aulas quanto os módulos */}
       <div className="p-4 my-6 bg-slate-50">
         <h3 className="text-2xl font-semibold my-2">Módulos</h3>
-        <DragDrop />
+        <DragDrop defaultValue={course} />
       </div>
 
       <Button type="submit" className="mt-4">Salvar Alterações</Button>

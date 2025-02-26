@@ -1,6 +1,6 @@
-"use client";
 import React, { useState, useRef, useEffect, Ref } from "react";
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useDrag, useDrop } from "react-dnd";
 import { DndProvider } from "react-dnd";
@@ -8,56 +8,53 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import AddLessonModal from './dialog/add-lesson';
 
 // Tipagem dos itens
-interface LessonType {
-  id: string;
-  title: string;
+interface CourseData {
+  id: number;
+  modules: Module[];
 }
 
-interface ModuleType {
-  id: string;
-  title: string;
-  lessons: LessonType[];
+interface Module {
+  id: number;
+  title: string | null;
+  courseId: number;
+  order: number; // Ordem de exibição
+  lessons: Lesson[];
+}
+
+interface Lesson {
+  id: number;
+  title: string | null;
+  content: string | null;
+  vimeoId: string | null;
+  courseModuleId: number;
+  type: "Lecture" | "Quizz" | "Text";
+  order: number; // ordem de exibição
 }
 
 interface MoveLessonProps {
-  fromModuleId: string;
+  fromModuleId: number;
   fromIndex: number;
-  toModuleId: string;
+  toModuleId: number;
   toIndex: number;
 }
-
-const mockModules: ModuleType[] = [
-  {
-    id: "module-1",
-    title: "Módulo 1",
-    lessons: [
-      { id: "lesson-1", title: "Aula 1" },
-      { id: "lesson-2", title: "Aula 2" },
-    ],
-  },
-  {
-    id: "module-2",
-    title: "Módulo 2",
-    lessons: [
-      { id: "lesson-3", title: "Aula 3" },
-      { id: "lesson-4", title: "Aula 4" },
-    ],
-  },
-];
 
 const ItemTypes = {
   MODULE: "module",
   LESSON: "lesson",
 };
 
-const DragDrop = () => {
-  const [modules, setModules] = useState<ModuleType[]>(mockModules);
+const DragDrop = ({ defaultValue }: { defaultValue: CourseData }) => {
+  const [courseData, setCourseData] = useState<CourseData>(defaultValue);
 
   const moveModule = (fromIndex: number, toIndex: number) => {
-    const newModules = [...modules];
+    const newModules = [...courseData.modules];
     const [movedModule] = newModules.splice(fromIndex, 1);
     newModules.splice(toIndex, 0, movedModule);
-    setModules(newModules);
+    // Atualiza a ordem dos módulos
+    newModules.forEach((module, index) => {
+      module.order = index + 1;
+    });
+    setCourseData({ ...courseData, modules: newModules });
   };
 
   const moveLesson = ({
@@ -66,74 +63,132 @@ const DragDrop = () => {
     toModuleId,
     toIndex,
   }: MoveLessonProps) => {
-    const newModules = [...modules];
+    const newModules = [...courseData.modules];
     const fromModule = newModules.find((mod) => mod.id === fromModuleId);
     const toModule = newModules.find((mod) => mod.id === toModuleId);
 
     if (fromModule && toModule) {
       const [movedLesson] = fromModule.lessons.splice(fromIndex, 1);
       toModule.lessons.splice(toIndex, 0, movedLesson);
-      setModules(newModules);
+      // Atualiza a ordem das aulas
+      fromModule.lessons.forEach((lesson, index) => {
+        lesson.order = index + 1;
+      });
+      toModule.lessons.forEach((lesson, index) => {
+        lesson.order = index + 1;
+      });
+      setCourseData({ ...courseData, modules: newModules });
     }
   };
 
+  // Função para deletar um módulo
+  const deleteModule = (moduleId: number) => {
+    const newModules = courseData.modules.filter((module) => module.id !== moduleId);
+    // Atualiza a ordem dos módulos restantes
+    newModules.forEach((module, index) => {
+      module.order = index + 1;
+    });
+    setCourseData({ ...courseData, modules: newModules });
+  };
+
+  // Função para deletar uma aula
+  const deleteLesson = (moduleId: number, lessonId: number) => {
+    const newModules = courseData.modules.map((module) => {
+      if (module.id === moduleId) {
+        const newLessons = module.lessons.filter((lesson) => lesson.id !== lessonId);
+        // Atualiza a ordem das aulas restantes
+        newLessons.forEach((lesson, index) => {
+          lesson.order = index + 1;
+        });
+        return { ...module, lessons: newLessons };
+      }
+      return module;
+    });
+    setCourseData({ ...courseData, modules: newModules });
+  };
+
   // Atualiza o título do módulo
-  const updateModuleTitle = (moduleId: string, newTitle: string) => {
-    setModules(modules.map(module =>
+  const updateModuleTitle = (moduleId: number, newTitle: string) => {
+    const newModules = courseData.modules.map((module) =>
       module.id === moduleId ? { ...module, title: newTitle } : module
-    ));
+    );
+    setCourseData({ ...courseData, modules: newModules });
   };
 
   // Adiciona um novo módulo
-  const addModule = () => {
+  const addModule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    // Encontrar o menor ID negativo já existente
+    const minNegativeId = Math.min(
+      0, // Garante que o primeiro ID será -1 se não houver negativos
+      ...courseData.modules.map((m) => (m.id < 0 ? m.id : 0))
+    );
+
     const newModule = {
-      id: `module-${modules.length + 1}`,
-      title: `Módulo ${modules.length + 1}`,
+      id: minNegativeId - 1, // Gera um novo ID temporário negativo
+      title: `Módulo ${courseData.modules.length + 1}`,
+      courseId: courseData.id,
+      order: courseData.modules.length + 1,
       lessons: [],
     };
-    setModules([...modules, newModule]);
+
+    setCourseData({ ...courseData, modules: [...courseData.modules, newModule] });
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="p-6 space-y-6">
-        {modules.map((module, moduleIndex) => (
-          <Module
-            key={module.id}
-            index={moduleIndex}
-            module={module}
-            moveModule={moveModule}
-            moveLesson={moveLesson}
-            updateModuleTitle={updateModuleTitle}
-          />
-        ))}
-        <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all">
-          <button
-            onClick={addModule}
-            className="flex items-center text-blue-600 font-semibold text-lg hover:text-blue-800 transition-colors"
-          >
-            <AddIcon className="mr-2" />
-            <span>Adicionar Novo Módulo</span>
-          </button>
+    <>
+      <input name="courseData" type="text" className="hidden" value={JSON.stringify({ id: courseData.id, modules: courseData.modules })} readOnly />
+      <DndProvider backend={HTML5Backend}>
+        <div className="p-6 space-y-6">
+          {courseData.modules.map((module, moduleIndex) => (
+            <Module
+              key={module.id}
+              index={moduleIndex}
+              module={module}
+              moveModule={moveModule}
+              moveLesson={moveLesson}
+              updateModuleTitle={updateModuleTitle}
+              deleteModule={deleteModule}
+              deleteLesson={deleteLesson}
+            />
+          ))}
+          <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all">
+            <button
+              onClick={addModule}
+              className="flex items-center text-blue-600 font-semibold text-lg hover:text-blue-800 transition-colors"
+            >
+              <AddIcon className="mr-2" />
+              <span>Adicionar Novo Módulo</span>
+            </button>
+          </div>
         </div>
-      </div>
-    </DndProvider>
+      </DndProvider>
+    </>
   );
 };
 
 interface ModuleProps {
-  module: ModuleType;
+  module: Module;
   index: number;
   moveModule: (fromIndex: number, toIndex: number) => void;
   moveLesson: (props: MoveLessonProps) => void;
-  updateModuleTitle: (moduleId: string, newTitle: string) => void;
+  updateModuleTitle: (moduleId: number, newTitle: string) => void;
+  deleteModule: (moduleId: number) => void;
+  deleteLesson: (moduleId: number, lessonId: number) => void;
 }
 
-const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: ModuleProps) => {
-  // Ref para o drop container e para o drag handle
+const Module = ({
+  module,
+  index,
+  moveModule,
+  moveLesson,
+  updateModuleTitle,
+  deleteModule,
+  deleteLesson,
+}: ModuleProps) => {
   const handleRef = useRef<HTMLDivElement>(null);
 
-  // Drop para reordenar módulos
   const [, drop] = useDrop({
     accept: ItemTypes.MODULE,
     hover: (item: { index: number }) => {
@@ -144,7 +199,6 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
     },
   });
 
-  // Drag para o módulo – associamos o drag ao drag handle
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.MODULE,
     item: { index },
@@ -159,7 +213,6 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
     }
   }, [drag]);
 
-  // Estado para edição do título
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(module.title);
 
@@ -169,13 +222,13 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
 
   const handleTitleBlur = () => {
     setIsEditing(false);
-    updateModuleTitle(module.id, title);
+    updateModuleTitle(module.id, title || "");
   };
 
   const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setIsEditing(false);
-      updateModuleTitle(module.id, title);
+      updateModuleTitle(module.id, title || "");
     }
   };
 
@@ -184,28 +237,37 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
       ref={(node) => {
         drop(node);
       }}
-      className={`bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all ${isDragging ? "opacity-50" : "opacity-100"}`}
+      className={`bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all ${isDragging ? "opacity-50" : "opacity-100"
+        } group`} // Adicionei a classe "group" aqui
     >
-      <div className="flex items-center mb-4">
-        {/* Drag handle para o módulo */}
-        <div ref={handleRef} className="cursor-move">
-          <DragIndicatorIcon />
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <div ref={handleRef} className="cursor-move">
+            <DragIndicatorIcon />
+          </div>
+          {isEditing ? (
+            <input
+              type="text"
+              value={title || ""}
+              onChange={handleTitleChange}
+              onBlur={handleTitleBlur}
+              onKeyDown={handleTitleKeyDown}
+              className="ml-2 text-xl font-semibold border-b border-gray-300 focus:outline-none"
+              autoFocus
+            />
+          ) : (
+            <h3 onClick={() => setIsEditing(true)} className="ml-2 text-xl font-semibold">
+              {module.title}
+            </h3>
+          )}
         </div>
-        {isEditing ? (
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            onBlur={handleTitleBlur}
-            onKeyDown={handleTitleKeyDown}
-            className="ml-2 text-xl font-semibold border-b border-gray-300 focus:outline-none"
-            autoFocus
-          />
-        ) : (
-          <h3 onClick={() => setIsEditing(true)} className="ml-2 text-xl font-semibold">
-            {module.title}
-          </h3>
-        )}
+        {/* Botão de deletar módulo */}
+        <button
+          onClick={() => deleteModule(module.id)}
+          className="text-red-600 hover:text-red-800 transition-colors opacity-0 group-hover:opacity-100"
+        >
+          <DeleteIcon />
+        </button>
       </div>
       <div className="space-y-2">
         {module.lessons.map((lesson, lessonIndex) => (
@@ -215,6 +277,7 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
             moduleId={module.id}
             lessonIndex={lessonIndex}
             moveLesson={moveLesson}
+            deleteLesson={deleteLesson}
           />
         ))}
         <AddLessonModal />
@@ -224,19 +287,19 @@ const Module = ({ module, index, moveModule, moveLesson, updateModuleTitle }: Mo
 };
 
 interface LessonProps {
-  lesson: LessonType;
-  moduleId: string;
+  lesson: Lesson;
+  moduleId: number;
   lessonIndex: number;
   moveLesson: (props: MoveLessonProps) => void;
+  deleteLesson: (moduleId: number, lessonId: number) => void;
 }
 
-const Lesson = ({ lesson, moduleId, lessonIndex, moveLesson }: LessonProps) => {
-  // Refs para o container de drop e para o drag handle da aula
+const Lesson = ({ lesson, moduleId, lessonIndex, moveLesson, deleteLesson }: LessonProps) => {
   const handleRef = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop({
     accept: ItemTypes.LESSON,
-    hover: (item: { moduleId: string; lessonIndex: number }) => {
+    hover: (item: { moduleId: number; lessonIndex: number }) => {
       if (item.moduleId !== moduleId || item.lessonIndex !== lessonIndex) {
         moveLesson({
           fromModuleId: item.moduleId,
@@ -250,7 +313,6 @@ const Lesson = ({ lesson, moduleId, lessonIndex, moveLesson }: LessonProps) => {
     },
   });
 
-  // Drag para a aula – associamos o drag ao drag handle
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.LESSON,
     item: { moduleId, lessonIndex },
@@ -268,16 +330,22 @@ const Lesson = ({ lesson, moduleId, lessonIndex, moveLesson }: LessonProps) => {
   return (
     <div
       ref={drop as unknown as Ref<HTMLDivElement>}
-      className={`bg-gray-100 p-2 rounded-md shadow-sm flex justify-between items-center ${isDragging ? "opacity-50" : "opacity-100"}`}
+      className={`bg-gray-100 p-2 rounded-md shadow-sm flex justify-between items-center ${isDragging ? "opacity-50" : "opacity-100"
+        } group`} // Adicionei a classe "group" aqui
     >
       <div className="flex items-center">
-        {/* Drag handle para a aula */}
         <div ref={handleRef} className="cursor-move mr-2">
           <DragIndicatorIcon fontSize="small" />
         </div>
         <span>{lesson.title}</span>
       </div>
-      <div className="ml-2 text-sm text-gray-500">Arraste para outro módulo</div>
+      {/* Botão de deletar aula */}
+      <button
+        onClick={() => deleteLesson(moduleId, lesson.id)}
+        className="text-red-600 hover:text-red-800 transition-colors opacity-0 group-hover:opacity-100"
+      >
+        <DeleteIcon fontSize="small" />
+      </button>
     </div>
   );
 };

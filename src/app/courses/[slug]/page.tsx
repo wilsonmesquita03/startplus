@@ -1,6 +1,6 @@
 import LandingPageComponents from "@/components/landing-components";
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import DefaultPage from "./default-page";
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   })
 
   if (!course) {
-    return redirect("/404")
+    return notFound();
   }
 
   // Buscar os dados da página de aterrissagem e seus componentes

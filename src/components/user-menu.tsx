@@ -62,10 +62,10 @@ const UserMenu = () => {
             <div>
               <ul className="flex flex-col gap-6 justify-center items-center">
                 <li>
-                  <Link href="/dashboard">Painel</Link>
+                  <Link href="/dashboard/panel">Painel</Link>
                 </li>
                 <li>
-                  <Link href="/dashboard">Perfil</Link>
+                  <Link href="/profile">Perfil</Link>
                 </li>
                 <li>
                   <Link href="/dashboard/my-courses">Meus cursos</Link>
@@ -105,7 +105,7 @@ const UserMenu = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/dashboard">
+                <Link href="/dashboard/panel">
                   Painel
                 </Link>
               </DropdownMenuItem>

@@ -36,6 +36,11 @@ model Course {
   Purchase          Purchase[]
   CourseLandingPage CourseLandingPage?
   draft             Boolean            @default(true)
+  hasSuport         Boolean            @default(false)
+  hasCertificate    Boolean            @default(false)
+  hasForum          Boolean            @default(false)
+  hasSubscription   Boolean            @default(false)
+  private           Boolean            @default(false)
 }
 
 model CourseModule {
@@ -53,7 +58,7 @@ model CourseLesson {
   content        String?
   vimeoId        String?
   type           CourseLessonType
-  courseModule   CourseModule     @relation(fields: [courseModuleId], references: [id])
+  courseModule   CourseModule     @relation(fields: [courseModuleId], references: [id], onDelete: Cascade)
   courseModuleId Int
   order          Int              @default(0)
 }

@@ -5,7 +5,7 @@ import Image from "next/image"
 const Header = () => {
   return (
     <header className="w-full fixed top-0 overflow-x-hidden z-10 bg-[rgba(35,35,35,0.8)] md:bg-transparent">
-      <div className="container w-full relative bg-[rgba(35,35,35,0.8)] backdrop-blur-[20px] py-4 md:px-10 md:my-2.5 grid grid-cols-2 md:grid-cols-5 items-center">
+      <div className="container w-full relative bg-[rgba(35,35,35,0.8)] backdrop-blur-[20px] py-4 md:px-10 md:my-2.5 grid grid-cols-2 md:grid-cols-5 items-center rounded">
         {/* Logo */}
         <div className="col-span-1">
           <Link href="/">
