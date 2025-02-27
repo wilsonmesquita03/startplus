@@ -1,16 +1,109 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-const Editor = dynamic(() => import("../editor"), {
+import { z } from "zod"
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@/components/ui/button"
+
+export const lectureSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  duration: z.string(),
+  vimeoId: z.string()
+})
+
+export const LectureForm = () => {
+  const form = useForm<z.output<typeof lectureSchema>>({
+    resolver: zodResolver(lectureSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+      duration: "",
+      vimeoId: ""
+    }
+  })
+
+  async function onSubmit(data: z.output<typeof lectureSchema>) {
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("content", data.content);
+    formData.append("duration", data.duration);
+    formData.append("vimeoId", data.vimeoId);
+
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Titulo</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite o nome da aula" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Conteudo</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite o conteudo da aula" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Duracao</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite a duracao da aula" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="vimeoId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Link do video</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite o link do video" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Criar</Button>
+      </form>
+    </Form>
+  )
+}
+
+const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false
 });
 import dynamic from "next/dynamic";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Block } from "@blocknote/core";
-import { Separator } from "../ui/separator";
-import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import DragDrop from "./dragdrop";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Create = ({ action }: { action: (data: FormData) => any }) => {
@@ -126,7 +219,7 @@ export const Edit = ({ course, action }: EditFormProps) => {
   return (
     <form action={action} className="w-full">
       <h2 className="text-xl font-semibold mb-4">Editar Curso</h2>
-      <input type="hidden" className="hidden" name="id" value={course.id} readOnly />
+      <input type="text" className="hidden" name="id" value={course.id} readOnly />
       <div className="mb-4">
         <label className="block mb-2">Título:</label>
         <Input
@@ -227,6 +320,12 @@ export const Edit = ({ course, action }: EditFormProps) => {
         </div>
       </div>
       <Separator />
+
+      { /* Implementar módulos e aulas aqui, quero que seja dragglable tanto as aulas quanto os módulos */}
+      <div className="p-4 my-6 bg-slate-50">
+        <h3 className="text-2xl font-semibold my-2">Seções</h3>
+        <DragDrop defaultValue={course} />
+      </div>
 
       <Button type="submit" className="mt-4">Salvar Alterações</Button>
     </form>

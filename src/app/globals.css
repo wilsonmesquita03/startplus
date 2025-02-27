@@ -88,13 +88,6 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #101010;
-    --foreground: #FFF;
-  }
-}
-
 @layer utilities {
   .custom-border {
     border-width: 1px;

@@ -1,103 +1,94 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import AddIcon from '@mui/icons-material/Add';
+import { Video, ListChecks, FileText, PlusIcon } from "lucide-react"; // Ícones da Lucide
+import { LectureForm } from "@/app/dashboard/courses/[id]/edit/forms";
 
 const AddLessonModal = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [vimeoId, setVimeoId] = useState("");
-  const [type, setType] = useState("Lecture"); // Default to Lecture type
+  const [step, setStep] = useState(1); // Step 1: Choose type, Step 2: Add details
+  const [selectedType, setSelectedType] = useState(""); // Tipo de aula selecionado
 
-  const handleSubmit = () => {
-    // Aqui você pode fazer a lógica de enviar os dados para a API ou salvar no banco de dados
-    console.log("New lesson added:", { title, content, vimeoId, type });
-    // Limpar os campos após o envio
-    setTitle("");
-    setContent("");
-    setVimeoId("");
-    setType("Lecture");
+  // Função para selecionar o tipo de aula
+  const handleTypeSelection = (type: string) => {
+    setSelectedType(type);
+    setStep(2); // Avança para a etapa 2
   };
 
   return (
     <Dialog>
-      <DialogTrigger className="flex items-center">
-        <AddIcon className="mr-2" />
-        Adicionar Nova Aula
+      <DialogTrigger asChild>
+        <Button variant="outline" className="flex items-center gap-2">
+          <PlusIcon className="h-4 w-4" /> {/* Ícone de adicionar */}
+          Adicionar Nova Aula
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Adicionar Nova Aula</DialogTitle>
           <DialogDescription>
-            Preencha os detalhes abaixo para adicionar uma nova aula ao módulo.
+            {step === 1
+              ? "Escolha o tipo de aula que deseja adicionar."
+              : `Preencha os detalhes para adicionar uma nova aula do tipo ${selectedType}.`}
           </DialogDescription>
         </DialogHeader>
 
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-            Título
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+        {/* Primeiro passo: Escolha do tipo de aula */}
+        {step === 1 && (
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            {/* Card para Aula (Lecture) */}
+            <Card
+              onClick={() => handleTypeSelection("Lecture")}
+              className="flex flex-col items-center justify-center p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <Video className="h-8 w-8 text-indigo-600" />
+              <span className="mt-2 text-sm font-medium text-gray-700">Aula</span>
+            </Card>
 
-        <div className="mt-4">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-            Conteúdo
-          </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+            {/* Card para Quiz */}
+            <Card
+              onClick={() => handleTypeSelection("Quizz")}
+              className="flex flex-col items-center justify-center p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <ListChecks className="h-8 w-8 text-indigo-600" />
+              <span className="mt-2 text-sm font-medium text-gray-700">Quiz</span>
+            </Card>
 
-        <div className="mt-4">
-          <label htmlFor="vimeoId" className="block text-sm font-medium text-gray-700">
-            ID do Vimeo (Opcional)
-          </label>
-          <input
-            id="vimeoId"
-            type="text"
-            value={vimeoId}
-            onChange={(e) => setVimeoId(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
+            {/* Card para Texto */}
+            <Card
+              onClick={() => handleTypeSelection("Text")}
+              className="flex flex-col items-center justify-center p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <FileText className="h-8 w-8 text-indigo-600" />
+              <span className="mt-2 text-sm font-medium text-gray-700">Texto</span>
+            </Card>
+          </div>
+        )}
 
-        <div className="mt-4">
-          <label htmlFor="type" className="block text-sm font-medium text-gray-700">
-            Tipo de Aula
-          </label>
-          <select
-            id="type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="Lecture">Aula</option>
-            <option value="Quizz">Quiz</option>
-            <option value="Text">Texto</option>
-          </select>
-        </div>
+        {/* Segundo passo: Renderização do formulário específico */}
+        {step === 2 && (
+          <div>
+            {/* Aqui você pode renderizar o formulário específico com base no `selectedType` */}
+            {selectedType === "Lecture" && <LectureForm />}
+            {selectedType === "Quizz" && <QuizzForm />}
+            {selectedType === "Text" && <TextForm />}
 
-        <div className="mt-4 flex justify-end">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-          >
-            Adicionar Aula
-          </button>
-        </div>
+            {/* Botão para voltar ao primeiro passo */}
+            <Button
+              variant="outline"
+              onClick={() => setStep(1)}
+              className="mt-4"
+            >
+              Voltar
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
 };
+
+const QuizzForm = () => <div>Formulário de Quiz</div>;
+const TextForm = () => <div>Formulário de Texto</div>;
 
 export default AddLessonModal;

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useRef, useEffect, Ref } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -5,7 +6,8 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useDrag, useDrop } from "react-dnd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import AddLessonModal from './dialog/add-lesson';
+import AddLessonModal from '../../../../../components/dialog/add-lesson';
+import { createModuleAction, moveModuleAction } from "./actions";
 
 // Tipagem dos itens
 interface CourseData {
@@ -54,6 +56,8 @@ const DragDrop = ({ defaultValue }: { defaultValue: CourseData }) => {
     newModules.forEach((module, index) => {
       module.order = index + 1;
     });
+
+    moveModuleAction(movedModule.id, toIndex);
     setCourseData({ ...courseData, modules: newModules });
   };
 
@@ -116,55 +120,40 @@ const DragDrop = ({ defaultValue }: { defaultValue: CourseData }) => {
   };
 
   // Adiciona um novo módulo
-  const addModule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const addModule = async (e: React.MouseEvent) => {
+    e.preventDefault()
 
-    // Encontrar o menor ID negativo já existente
-    const minNegativeId = Math.min(
-      0, // Garante que o primeiro ID será -1 se não houver negativos
-      ...courseData.modules.map((m) => (m.id < 0 ? m.id : 0))
-    );
+    const _module = await createModuleAction(courseData.id);
 
-    const newModule = {
-      id: minNegativeId - 1, // Gera um novo ID temporário negativo
-      title: `Módulo ${courseData.modules.length + 1}`,
-      courseId: courseData.id,
-      order: courseData.modules.length + 1,
-      lessons: [],
-    };
-
-    setCourseData({ ...courseData, modules: [...courseData.modules, newModule] });
+    setCourseData({ ...courseData, modules: [...courseData.modules, _module] });
   };
 
   return (
-    <>
-      <input name="courseData" type="text" className="hidden" value={JSON.stringify({ id: courseData.id, modules: courseData.modules })} readOnly />
-      <DndProvider backend={HTML5Backend}>
-        <div className="p-6 space-y-6">
-          {courseData.modules.map((module, moduleIndex) => (
-            <Module
-              key={module.id}
-              index={moduleIndex}
-              module={module}
-              moveModule={moveModule}
-              moveLesson={moveLesson}
-              updateModuleTitle={updateModuleTitle}
-              deleteModule={deleteModule}
-              deleteLesson={deleteLesson}
-            />
-          ))}
-          <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all">
-            <button
-              onClick={addModule}
-              className="flex items-center text-blue-600 font-semibold text-lg hover:text-blue-800 transition-colors"
-            >
-              <AddIcon className="mr-2" />
-              <span>Adicionar Novo Módulo</span>
-            </button>
-          </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="p-6 space-y-6">
+        {courseData.modules.map((module, moduleIndex) => (
+          <Module
+            key={module.id}
+            index={moduleIndex}
+            module={module}
+            moveModule={moveModule}
+            moveLesson={moveLesson}
+            updateModuleTitle={updateModuleTitle}
+            deleteModule={deleteModule}
+            deleteLesson={deleteLesson}
+          />
+        ))}
+        <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-all">
+          <button
+            onClick={addModule}
+            className="flex items-center text-blue-600 font-semibold text-lg hover:text-blue-800 transition-colors"
+          >
+            <AddIcon className="mr-2" />
+            <span>Adicionar Novo Módulo</span>
+          </button>
         </div>
-      </DndProvider>
-    </>
+      </div>
+    </DndProvider>
   );
 };
 
@@ -191,12 +180,13 @@ const Module = ({
 
   const [, drop] = useDrop({
     accept: ItemTypes.MODULE,
-    hover: (item: { index: number }) => {
+
+    drop: (item: { index: number }) => {
       if (item.index !== index) {
         moveModule(item.index, index);
         item.index = index;
       }
-    },
+    }
   });
 
   const [{ isDragging }, drag] = useDrag({

@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 const permissions = [
   { name: "access_dashboard" },
+  { name: "access_admin_dashboard" },
   { name: "access_marketing_dashboard" },
   { name: "access_courses_dashboard" },
   { name: "create_courses" },

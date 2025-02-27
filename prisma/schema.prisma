@@ -20,27 +20,28 @@ enum CourseLessonType {
 }
 
 model Course {
-  id                Int                @id @default(autoincrement())
-  title             String
-  type              CourseType
-  seo               String?
-  description       String?
-  slug              String             @unique
-  defaultSales      Int                @default(0)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  price             Float              @default(0)
-  promotionalPrice  Float?
-  modules           CourseModule[]
-  EnrollmentItem    EnrollmentItem[]
-  Purchase          Purchase[]
-  CourseLandingPage CourseLandingPage?
-  draft             Boolean            @default(true)
-  hasSuport         Boolean            @default(false)
-  hasCertificate    Boolean            @default(false)
-  hasForum          Boolean            @default(false)
-  hasSubscription   Boolean            @default(false)
-  private           Boolean            @default(false)
+  id               Int              @id @default(autoincrement())
+  title            String
+  type             CourseType
+  seo              String?
+  description      String?
+  slug             String           @unique
+  defaultSales     Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  price            Float            @default(0)
+  promotionalPrice Float?
+  modules          CourseModule[]
+  EnrollmentItem   EnrollmentItem[]
+  Purchase         Purchase[]
+  draft            Boolean          @default(true)
+  hasSuport        Boolean          @default(false)
+  hasCertificate   Boolean          @default(false)
+  hasForum         Boolean          @default(false)
+  hasSubscription  Boolean          @default(false)
+  private          Boolean          @default(false)
+  pageId           Int?
+  Page             Page?
 }
 
 model CourseModule {
@@ -144,20 +145,20 @@ model Purchase {
   purchasedAt DateTime @default(now())
 }
 
-model CourseLandingPage {
-  id         Int                @id @default(autoincrement())
-  courseId   Int                @unique
-  course     Course             @relation(fields: [courseId], references: [id])
-  components LandingComponent[]
+model Page {
+  id         Int             @id @default(autoincrement())
+  course     Course?         @relation(fields: [courseId], references: [id])
+  components PageComponent[]
+  courseId   Int?            @unique
 }
 
-model LandingComponent {
-  id        Int               @id @default(autoincrement())
-  landingId Int
-  landing   CourseLandingPage @relation(fields: [landingId], references: [id], onDelete: Cascade)
-  type      ComponentType
-  order     Int               @default(0) // Para ordenar os componentes na página
-  settings  Json // 🔥 Configurações dinâmicas do componente
+model PageComponent {
+  id       Int           @id @default(autoincrement())
+  pageId   Int
+  page     Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type     ComponentType
+  order    Int           @default(0) // Para ordenar os componentes na página
+  settings Json // 🔥 Configurações dinâmicas do componente
 }
 
 enum ComponentType {

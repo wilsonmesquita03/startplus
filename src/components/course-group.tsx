@@ -4,7 +4,6 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import { useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
-import { useRouter } from 'next/navigation';
 import { useCourse } from '@/app/course/[slug]/learn/course-provider';
 import Link from 'next/link';
 
@@ -21,7 +20,6 @@ type Data = {
 const CourseGroup = ({ data }: { data: Data }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { slug } = useCourse()
-  const router = useRouter()
 
   return (
     <div>

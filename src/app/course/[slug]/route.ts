@@ -1,13 +1,21 @@
 import prisma from "@/lib/prisma";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { redirect } from "next/navigation";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest) {
   const url = new URL(req.url || "");
 
   const slug = url.pathname.split("/")[2];
 
-  const lesson = await prisma.courseLesson.findFirst();
+  const lesson = await prisma.courseLesson.findFirst({
+    where: {
+      courseModule: {
+        course: {
+          slug
+        }
+      }
+    }
+  });
 
   if (!lesson) {
     return redirect("/");
